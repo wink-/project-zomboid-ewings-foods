@@ -1,0 +1,8 @@
+name=Ewing's Foods
+id=EwingsFoods
+version=1.0.0
+description=Make vanilla cheese from milk, vinegar and salt with a reusable pot and cheesecloth near an open fire. Build 42.21.
+author=wink-
+url=https://github.com/wink-/project-zomboid-ewings-foods
+versionMin=42.21
+versionMax=42.21

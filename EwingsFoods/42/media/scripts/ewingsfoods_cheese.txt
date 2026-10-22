@@ -1,0 +1,27 @@
+module EwingsFoods
+{
+    craftRecipe EwingsFoods_MakeCheese
+    {
+        timedAction = Making,
+        time = 600,
+        Tags = InHandCraft;Cooking;CanBeDoneInDark,
+        category = Cooking,
+        SkillRequired = Cooking:1,
+        xpAward = Cooking:5,
+        OnTest = RecipeCodeOnTest.openFire,
+        Tooltip = Tooltip_Recipe_OpenFire,
+        inputs
+        {
+            item 1 [Base.Pot;Base.PotForged] mode:keep flags[IsEmpty],
+            item 1 [Base.CheeseCloth] mode:keep,
+            item 1 [*] mode:keep,
+            -fluid 1.0 [CowMilk;SheepMilk],
+            item 1 [Base.Vinegar2;Base.Vinegar_Jug],
+            item 1 [Base.Salt],
+        }
+        outputs
+        {
+            item 1 Base.Cheese,
+        }
+    }
+}
