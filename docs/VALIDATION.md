@@ -1,4 +1,29 @@
-# Validation evidence - 1.0.2
+# Validation evidence - 1.1.0
+
+Target: installed PZ 42.21 / Steam build 25485521 on Windows. These are development/offline results; publication and installation are recorded separately. No game launch/stop, screen control or save/settings edit was performed. Development did not modify the installed mod.
+
+## New nachos results
+
+- Three scripts pass installed native structural ScriptParser checks. The new recipe/item IDs, actual ingredient IDs, food-use quantities, one consumed plate, retained knife, one output, English name/tooltip, native flags, model reference and all selected properties are checked. Nutrition totals equal the exact selected portions to rounding. Four existing cheese/paste runtime files match their baseline SHA-256 hashes.
+- Native food references, plate variants, generated recipe definitions and container-return examples were inspected. The generated recipes include a ClayPlate kiln output; EatType Plate occurs on foods actually returning pans/vessels and is not proof that Base.Plate is a native preparation ingredient. Standard Plate was selected deliberately; ClayPlate is excluded to preserve exact return type.
+- Installed bytecode confirms OnCreate receives recipe data and character; used recipe-data, age-copy and cooked-state APIs exist; native raw/rotten/frozen guards, partial-food scaling and depleted-food replacement paths exist. Ready-to-eat/alreadycooked and hidecooked tags match native bread/toast patterns. No new OnEat or OnCooked callback, inventory insertion, age-reset or global override exists.
+- **14 native food instruction cases** execute the actual installed mood/hunger/calorie getter bytecode against field/method doubles. They establish strict normalized heat >1.3, two-point hot unhappiness bonus, cooling removal, cooked/cookable requirements, stale-food modifiers and identical hunger/calories at cold/hot temperatures. **5 native age-copy instruction cases** verify installed relative-age mapping. The tiny interpreter reads installed code at validation time; no extracted bytecode/source is distributed, and no world is booted.
+- **11 isolated Kahlua OnCreate cases** exercise actual mod code: fresh/stale inputs, worst relative age despite absolute-age ordering, reverse ordering, preserving older inherited age, nonfood plate/tools, nonaging packaged chips, output scope/readiness and no portion/nutrition mutation.
+- **4 installed eating Lua spy cases** execute actual native eat/complete functions against a character spy, checking selected half-portion progress, almost-complete action scaling, half completion and full completion. This does not execute actual inventory mutation. Native full/depleted UseAndSync and partial multiplyFoodValues/replacement references are separately inspected.
+- Original icon was built and visually inspected at 32x32 on light/dark backgrounds. Its canvas matches installed Item_Plate and Item_CornChips metadata. Dimensions, RGBA alpha, transparent corners, visible area and margins pass. The 3D hand/world reference remains the native plain plate mesh; toppings are visible in the icon.
+- Existing **25 heat + 22 tomato + 3 native handcraft spy cases** pass unchanged in behavior. They are 50 unique cases; repeated heat-harness execution is not counted again. New nachos cases total 34, giving 84 unique isolated/instruction cases overall.
+
+## Limits and acceptance
+
+No full game recipe registration, UI rendering, actual inventory return/consumption/plate condition, partial eating, preparation cancellation, live appliance warming/cooling/burning, storage/save/reload or multiplayer has been observed. Those remain explicitly pending in ACCEPTANCE.md. A cancelled eating action can retain the native already-eaten fraction; no free-undo guarantee is made. Native ReplaceOnUse returns a plate on depletion, not a custom identity-preserving plate object.
+
+Both install/source archives are built twice with fixed timestamps, stable ordering, explicit allowlists and SHA-256 sidecars, then verified against reviewed source. The extracted install archive is validated separately. No game source, texturepack pixels, binaries, logs, .validation files or credentials are distributed. Source includes only original mod art and tooling. The prior skill supplemental references/standard validator remained unavailable; these are project-local checks.
+
+## Inherited 1.0.2 investigation
+
+The following retained evidence describes the earlier two-recipe baseline; the new custom food/lifecycle differences are documented above and in NACHOS.md.
+
+### 1.0.2 baseline
 
 Date: 2026-10-23. Target: Windows, Project Zomboid 42.21, Steam build 25485521. Mod ID: EwingsFoods. Dependencies: none.
 

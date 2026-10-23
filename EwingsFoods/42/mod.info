@@ -1,7 +1,7 @@
 name=Ewing's Foods
 id=EwingsFoods
-version=1.0.2
-description=Make vanilla cheese or tomato paste with reusable tools near a lit fire or powered, active stove. Build 42.21.
+version=1.1.0
+description=Make cheese, tomato paste and plated loaded nachos. Nachos enjoy a native hot-food mood bonus and return their plate when eaten. Build 42.21.
 author=wink-
 url=https://github.com/wink-/project-zomboid-ewings-foods
 versionMin=42.21

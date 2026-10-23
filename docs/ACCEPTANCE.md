@@ -47,3 +47,20 @@ If a check fails, preserve the reproduction and inspect the exact current build 
 | Save/reload/MP | Vanilla output survives reload/removal; separately test identical server/client versions, simultaneous crafts, cancel/reconnect and authoritative consumption |
 
 The Lua spy tests check the installed stop/performRecipe call flow only; they do not establish any of these actual inventory/world outcomes. Continuous heat tracking or custom transaction handling is not introduced.
+
+## Loaded nachos 1.1.0 - pending actual gameplay
+
+| Check | Expected result |
+| --- | --- |
+| Registration and art | One Loaded Nachos preparation recipe, correct name/quantities; readable icon in inventory/equipped slot; native plain plate model in hand/world |
+| Valid inputs | One full TortillaChips bag, cheese 5, tomato 6, fresh jalapeno 1, onion 3 native food-use units, one Plate; correct leftovers, one output; knife retained |
+| Missing/invalid | Missing plate/knife/topping, dull knife, insufficient units, partial chip bag, rotten/frozen food or cooked vegetables block; ClayPlate/potato crisps/dried pepper excluded |
+| Plate conservation | Plate count falls by one during preparation; no extra plate on cancellation/partial eating; exactly one returns when the dish depletes |
+| Portions and cancellation | Eat quarter/half/remainder; no plate before depletion; cancelled eating consumes only native progressed fraction; preparation cancel has no output/ingredient loss |
+| Heat and mood | Cold assembly succeeds; normal mains/generator stove and supported fire containers warm the dish; fresh cold/hot full values -5/-7 unhappiness; calories unchanged |
+| Cooling and burning | Cooling removes hot bonus; extended cooking burns normally, with native penalties and no replacement plate duplication |
+| Freshness | Ingredients at different relative ages produce the oldest mapped age; stale never becomes fresh; warming/repeated cooling/reheating never resets age |
+| Nutrition and weight | Full dish matches selected portion calories/macros; portions scale normally; plate weight remains accounted for |
+| Repeated batches | Each batch consumes exactly one plate and ingredient batch; no free containers or custom food duplication |
+| Regression | Recheck cheese and tomato paste, including mains/generator heat, native vanilla output and tools |
+| Persistence/removal/MP | Test disposable save/reload and matching server/client versions, partial meals, plate return, simultaneous crafts and reconnect; resolve custom food before removing the mod |

@@ -1,0 +1,56 @@
+module EwingsFoods
+{
+    item LoadedNachos
+    {
+        DisplayCategory = Food,
+        ItemType = base:food,
+        Icon = EwingsFoods_LoadedNachos,
+        Weight = 1.5,
+        EatType = Plate,
+        ReplaceOnUse = Base.Plate,
+        IsCookable = true,
+        MinutesToCook = 0,
+        MinutesToBurn = 20,
+        DaysFresh = 3,
+        DaysTotallyRotten = 5,
+        HungerChange = -25.0,
+        ThirstChange = -4.0,
+        UnhappyChange = -5,
+        BoredomChange = -5,
+        GoodHot = true,
+        Calories = 480.567,
+        Carbohydrates = 46.002,
+        Lipids = 43.336,
+        Proteins = 5.514,
+        CustomEatSound = EatingCrispy,
+        StaticModel = Base.Plate_Ground,
+        WorldStaticModel = Base.Plate_Ground,
+        Tags = base:alreadycooked;base:hidecooked,
+    }
+
+    craftRecipe EwingsFoods_MakeLoadedNachos
+    {
+        timedAction = Making,
+        time = 80,
+        Tags = InHandCraft;Cooking;CanBeDoneInDark,
+        category = Cooking,
+        SkillRequired = Cooking:1,
+        xpAward = Cooking:3,
+        OnCreate = EwingsFoodsNachos.onCreate,
+        Tooltip = Tooltip_EwingsFoods_LoadedNachos,
+        inputs
+        {
+            item 1 [Base.Plate] mode:destroy flags[ItemCount],
+            item 1 tags[base:sharpknife;base:meatcleaver] mode:keep flags[IsNotDull],
+            item 1 [Base.TortillaChips] mode:destroy flags[ItemCount;IsWholeFoodItem],
+            item 5 [Base.Cheese] flags[InheritFoodAge],
+            item 6 [Base.Tomato] flags[InheritFoodAge;IsUncookedFoodItem],
+            item 1 [Base.PepperJalapeno] flags[InheritFoodAge;IsUncookedFoodItem],
+            item 3 [Base.Onion] flags[InheritFoodAge;IsUncookedFoodItem],
+        }
+        outputs
+        {
+            item 1 EwingsFoods.LoadedNachos,
+        }
+    }
+}

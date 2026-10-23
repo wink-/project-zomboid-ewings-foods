@@ -80,13 +80,13 @@ def check(game, mod):
                          OnTest="EwingsFoodsHeat.canMakeCheese", Tooltip="Tooltip_EwingsFoods_CheeseHeat")
     assert "AllowRottenItem" not in text and "AllowFrozenItem" not in text
     assert "InheritFood" not in text and "mode:mixture" not in text and "mode:primary" not in text
-    assert {p.relative_to(mod).as_posix() for p in mod.rglob("*.lua")} == {"42/media/lua/shared/EwingsFoodsHeat.lua", "42/media/lua/shared/EwingsFoodsTomatoPaste.lua"}
+    assert {p.relative_to(mod).as_posix() for p in mod.rglob("*.lua")} == {"42/media/lua/shared/EwingsFoodsHeat.lua", "42/media/lua/shared/EwingsFoodsTomatoPaste.lua", "42/media/lua/shared/EwingsFoodsNachos.lua"}
     info = dict(line.split("=",1) for line in (mod / "42/mod.info").read_text().splitlines() if "=" in line)
-    assert info["id"] == "EwingsFoods" and info["version"] == "1.0.2"
+    assert info["id"] == "EwingsFoods" and info["version"] == "1.1.0"
     assert info["versionMin"] == info["versionMax"] == "42.21"
     assert (mod / "common").is_dir()
     translation = json.loads((mod / "42/media/lua/shared/Translate/EN/Recipes.json").read_text("utf-8-sig"))
-    assert translation == {"EwingsFoods_MakeCheese": "Make Cheese (Ewing's Foods)", "EwingsFoods_MakeTomatoPaste": "Make Tomato Paste (Ewing's Foods)"}
+    assert translation == {"EwingsFoods_MakeCheese": "Make Cheese (Ewing's Foods)", "EwingsFoods_MakeTomatoPaste": "Make Tomato Paste (Ewing's Foods)", "EwingsFoods_MakeLoadedNachos": "Make Loaded Nachos (Ewing's Foods)"}
     tooltip = json.loads((mod / "42/media/lua/shared/Translate/EN/Tooltip.json").read_text("utf-8-sig"))
     assert "Tooltip_EwingsFoods_CheeseHeat" in tooltip and "generator" in tooltip["Tooltip_EwingsFoods_CheeseHeat"]
     print("PASS layout, version bounds, translations, unchanged cheese recipe contract")
@@ -191,6 +191,8 @@ def check(game, mod):
     run(game, mod)
     from test_tomatopaste import check as check_tomato
     check_tomato(game, mod)
+    from test_nachos import check as check_nachos
+    check_nachos(game, mod)
     print("Offline checks passed. Gameplay, interruption/revalidation and multiplayer remain untested.")
 
 

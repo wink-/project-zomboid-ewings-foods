@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def check(game, mod):
     recipe = mod / '42/media/scripts/ewingsfoods_tomatopaste.txt'
     text = recipe.read_text('utf-8-sig')
-    assert len(list((mod/'42/media/scripts').glob('*.txt'))) == 2
+    assert len(list((mod/'42/media/scripts').glob('*.txt'))) == 3
     assert text.count('craftRecipe ') == 1 and 'module EwingsFoods' in text
     assert 'craftRecipe EwingsFoods_MakeTomatoPaste' in text
     assert not re.search(r'\bitem\s+[A-Za-z_]', text), 'no replacement/new item definition'

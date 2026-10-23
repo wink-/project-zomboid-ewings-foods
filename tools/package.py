@@ -3,16 +3,20 @@ from pathlib import Path
 import argparse, hashlib, io, zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.2"
+VERSION = "1.1.0"
 RUNTIME = ["42/mod.info", "42/media/scripts/ewingsfoods_cheese.txt",
            "42/media/lua/shared/Translate/EN/Recipes.json",
            "42/media/lua/shared/Translate/EN/Tooltip.json", "42/media/lua/shared/EwingsFoodsHeat.lua",
-           "42/media/scripts/ewingsfoods_tomatopaste.txt", "42/media/lua/shared/EwingsFoodsTomatoPaste.lua"]
-DOCS = ["README.md", "CHANGELOG.md", "docs/VALIDATION.md", "docs/ACCEPTANCE.md", "docs/BASELINE.md"]
+           "42/media/scripts/ewingsfoods_tomatopaste.txt", "42/media/lua/shared/EwingsFoodsTomatoPaste.lua",
+           "42/media/scripts/ewingsfoods_nachos.txt", "42/media/lua/shared/EwingsFoodsNachos.lua",
+           "42/media/lua/shared/Translate/EN/ItemName.json", "common/media/textures/Item_EwingsFoods_LoadedNachos.png"]
+DOCS = ["README.md", "CHANGELOG.md", "docs/VALIDATION.md", "docs/ACCEPTANCE.md", "docs/BASELINE.md", "docs/NACHOS.md", "docs/ART.md"]
 EXPECTED = {"EwingsFoods/" + p for p in RUNTIME + DOCS} | {"EwingsFoods/common/"}
 TOOLS = ['tools/classfile.py', 'tools/package.py', 'tools/validate.py', 'tools/test_heat.lua',
-         'tools/test_heat.py', 'tools/test_tomatopaste.lua', 'tools/test_tomatopaste.py']
-SOURCE = {f'EwingsFoods-{VERSION}/'+p for p in DOCS+TOOLS+['.gitignore','.gitattributes']}
+         'tools/test_heat.py', 'tools/test_tomatopaste.lua', 'tools/test_tomatopaste.py',
+         'tools/build_nachos_icon.py', 'tools/test_nachos.py', 'tools/test_nachos.lua', 'tools/native_food_vm.py']
+ART = ['art/loaded-nachos-source.png', 'art/loaded-nachos-icon-qa.png']
+SOURCE = {f'EwingsFoods-{VERSION}/'+p for p in DOCS+TOOLS+ART+['.gitignore','.gitattributes']}
 SOURCE |= {f'EwingsFoods-{VERSION}/EwingsFoods/'+p for p in RUNTIME+['common/']}
 
 
@@ -21,7 +25,7 @@ def archive_bytes(source=False):
     entries.update({"EwingsFoods/" + p: (ROOT / p).read_bytes() for p in DOCS})
     entries["EwingsFoods/common/"] = b""
     if source:
-        entries = {f'EwingsFoods-{VERSION}/'+p: (ROOT/p).read_bytes() for p in DOCS+TOOLS+['.gitignore','.gitattributes']}
+        entries = {f'EwingsFoods-{VERSION}/'+p: (ROOT/p).read_bytes() for p in DOCS+TOOLS+ART+['.gitignore','.gitattributes']}
         entries.update({f'EwingsFoods-{VERSION}/EwingsFoods/'+p: (ROOT/'EwingsFoods'/p).read_bytes() for p in RUNTIME})
         entries[f'EwingsFoods-{VERSION}/EwingsFoods/common/'] = b''
     out = io.BytesIO()

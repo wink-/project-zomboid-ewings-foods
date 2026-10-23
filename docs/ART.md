@@ -1,0 +1,11 @@
+# Loaded nachos art provenance and QA
+
+Generated with the built-in image generation tool, with transparent background enabled. No API key/CLI fallback, reference image, extracted game pixels or third-party asset was used. The original 1254x1254 RGBA source is `art/loaded-nachos-source.png`. A deterministic Pillow asset step crops transparent padding, downsamples into a 30-pixel box with Lanczos filtering, and centers it on a transparent 32x32 canvas. It does not repaint or synthesize the artwork.
+
+Runtime asset: `EwingsFoods/common/media/textures/Item_EwingsFoods_LoadedNachos.png` (32x32 RGBA). It is used by the inventory and equipped-hand item slot. The validator reads only installed texturepack metadata to confirm that native Item_Plate and Item_CornChips have 32x32 untrimmed canvases, then checks icon dimensions, alpha extrema, visible area, transparent corners and margins. `art/loaded-nachos-icon-qa.png` shows actual-size light/dark previews and enlarged pixels. The final actual-size icon was visually inspected for a visible white plate rim, gold chips/cheese, red tomato and green jalapeno accents. In-game rendering remains unobserved.
+
+Exact generation prompt:
+
+> Use case: stylized-concept. Asset type: original Project Zomboid-style food inventory icon, to be downscaled to 32x32 pixels. Draw exactly one low white ceramic round dinner plate, viewed from above at a 35-degree isometric angle, piled with bold golden triangular tortilla chips covered by melted orange-yellow cheese, a few clearly separated red diced tomato pieces, three green jalapeno rings and small white onion cubes. Chunky readable shapes, strong silhouette, crisp dark brown outlines and shaded pixel-art/game-item illustration style, restricted warm palette, no fine photographic texture. Centered, fills about 88 percent of square canvas, entire plate visible. Truly transparent background with alpha, no checkerboard, no scene, no hands, no fork, no extra crockery, no text, no branding, no watermark. Original artwork only.
+
+The source ZIP includes the original generated source and QA image; the install ZIP ships only the final icon. Run `python tools/build_nachos_icon.py` with Pillow to reproduce the icon. Runtime does not require Python/Pillow. The owner has not selected a project license; no third-party rights are asserted.

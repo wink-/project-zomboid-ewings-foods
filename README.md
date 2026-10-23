@@ -1,8 +1,14 @@
 # Ewing's Foods
 
-Version **1.0.2** · mod ID **EwingsFoods** · standalone Project Zomboid **42.21** mod.
+Version **1.1.0** · mod ID **EwingsFoods** · standalone Project Zomboid **42.21** mod.
 
-Two independent one-step Cooking recipes make existing vanilla `Base.Cheese` or `Base.TomatoPaste`. No new food, intermediate item, dependency, vanilla replacement, global Lua override, or background system is added. The tomato recipe reuses the existing cheese heat predicate unchanged.
+Three one-step Cooking recipes make existing vanilla cheese, existing vanilla tomato paste, or custom plated loaded nachos. Cheese and tomato-paste runtime files remain byte-identical to published 1.0.2. Nachos add one custom food type, an original transparent icon and a narrow recipe-completion callback preserving ingredient age and readiness; no vanilla replacements or global overrides are added.
+
+## Make loaded nachos
+
+Combine a full `Base.TortillaChips` bag, 5 cheese food-use units, 6 tomato units, 1 fresh jalapeno unit and 3 onion units on one `Base.Plate`, using a retained sharp knife. Cooking 1, time 80, 3 Cooking XP. No preparation heat is required. The resulting ready-to-eat food returns one standard plate only when depleted; partial eating retains the plated food.
+
+Reheat normally for native hot-food enjoyment: a fresh full dish gives -5 unhappiness cold and -7 hot (normalized heat above 1.3); calories remain 480.567. It cools, spoils and burns under native food rules. See [exact quantities, plate lifecycle, heating/storage and removal limitations](docs/NACHOS.md), [original icon provenance/preview](docs/ART.md), and [test evidence](docs/VALIDATION.md).
 
 ## Make tomato paste
 
@@ -53,7 +59,7 @@ Vanilla cheese is unchanged: pizza ingredient support, 113 calories, -15 hunger,
 
 ## Install
 
-1. Download `EwingsFoods-1.0.2-install.zip` and its SHA-256 sidecar from the [v1.0.2 release](https://github.com/wink-/project-zomboid-ewings-foods/releases/tag/v1.0.2), verify the checksum, and close the game before installing. The source ZIP is for development. This update is not installed automatically.
+1. Download `EwingsFoods-1.1.0-install.zip` and its SHA-256 sidecar from the [v1.1.0 release](https://github.com/wink-/project-zomboid-ewings-foods/releases/tag/v1.1.0), verify the checksum, and fully close the game/server before installation. Back up the existing EwingsFoods folder outside every active mods directory before replacing it. The source ZIP is for development; building or publishing does not install the mod.
 2. Extract the single `EwingsFoods` directory into the effective Project Zomboid user-data `mods` directory. It must contain `EwingsFoods/42/mod.info` and `EwingsFoods/common/`. Do not install a GitHub source archive as the install ZIP.
 3. Enable **Ewing's Foods** in the appropriate mod selection. For an existing world, use its own mod selection and back up the world first. No additional mod is required. When upgrading, replace only the old EwingsFoods folder instead of merging versions.
 
@@ -65,18 +71,18 @@ Inspected target: Windows, game 42.21, Steam build 25485521. The version bounds 
 
 Native crafting data, English translations and shared, read-only mod-owned predicates are shipped. For multiplayer, distribute the identical version to server and every client and add `EwingsFoods` to the server's mod list according to its normal administration process. No Workshop ID exists. The absence of custom networking does not establish multiplayer compatibility: client/server crafting, sync, interruption, and reconnect still require runtime testing.
 
-To roll back, close the game/server normally, disable this mod for that world/server, then remove only its `EwingsFoods` directory or restore a previous version. It creates no custom saved item types; existing crafted cheese and paste stay vanilla items. Consumed ingredients are not refunded. Keep backups and check other mods for recipe conflicts. Do not merge a replacement release into an old folder.
+To roll back, close the game/server normally, disable this mod for that world/server, then remove only its `EwingsFoods` directory or restore a previous version. Cheese and paste stay vanilla items. Loaded nachos are a custom saved type: resolve existing portions and their incorporated plates before removing this version, and back up the world. Removing it can remove/strand those items; no save migration is supplied. Consumed ingredients are not refunded. Keep backups and check other mods for recipe conflicts. Do not merge a replacement release into an old folder.
 
 ## Validation and development
 
 See [validation evidence](docs/VALIDATION.md) and [runtime acceptance checks](docs/ACCEPTANCE.md). Offline checks are not an in-game or multiplayer certification. No game/server was launched, no mod was installed, and no saves or enabled-mod lists were accessed during development.
 
-Requires Python 3.12+ and a local copy of the inspected game for definition checks. The native structural syntax check invokes `ScriptParser` from the local game JAR through a tiny generated Java bridge; it does not boot the game. The heat regression harness compiles and executes the actual callback using the installed Kahlua VM with test-double world objects; it does not use a live generator or stove. Supply paths as arguments; no machine-specific paths are stored in the repository.
+Requires Python 3.12+, Pillow for icon checks/builds, and a local copy of the inspected game for definition checks. The native structural syntax check invokes `ScriptParser` from the local game JAR through a tiny generated Java bridge; it does not boot the game. The heat regression harness compiles and executes the actual callback using the installed Kahlua VM with test-double world objects; it does not use a live generator or stove. Supply paths as arguments; no machine-specific paths are stored in the repository.
 
 ```powershell
 python tools/validate.py --game-root '<your ProjectZomboid installation>'
 python tools/package.py
-python tools/package.py --verify dist/EwingsFoods-1.0.2-install.zip
+python tools/package.py --verify dist/EwingsFoods-1.1.0-install.zip
 ```
 
 The packager uses an explicit file allowlist, fixed timestamps, stable ordering and ZIP_STORED. It builds twice, requires identical bytes, and checks the checksum and install layout. Install and source ZIPs are separately allowlisted. Source contains original mod data, original tooling and documentation only; no game assets/source, credentials, personal paths or logs. No license has been selected by the owner; no third-party license is asserted.

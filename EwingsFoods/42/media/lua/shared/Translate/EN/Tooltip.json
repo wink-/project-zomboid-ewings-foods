@@ -1,4 +1,5 @@
 {
     "Tooltip_EwingsFoods_CheeseHeat": "Requires a nearby lit fire, fireplace or barbecue, or an unbroken stove that is on, powered and warmed. Mains and generator electricity both work.",
-    "Tooltip_EwingsFoods_TomatoPaste": "Requires 9 whole, fresh, uncooked, thawed tomatoes; an empty pot, sharp knife and stirring utensil (kept); and nearby lit fire or an unbroken, on, powered, warmed stove. Mains and generator power work. Makes vanilla packaged, nonperishable tomato paste; no can or jar is produced."
+    "Tooltip_EwingsFoods_TomatoPaste": "Requires 9 whole, fresh, uncooked, thawed tomatoes; an empty pot, sharp knife and stirring utensil (kept); and nearby lit fire or an unbroken, on, powered, warmed stove. Mains and generator power work. Makes vanilla packaged, nonperishable tomato paste; no can or jar is produced.",
+    "Tooltip_EwingsFoods_LoadedNachos": "Assemble tortilla chips, cheese, tomato, fresh jalapeno and onion on a plate with a sharp knife (kept). No heat required to prepare. Reheat the ready-to-eat dish for 2 less unhappiness while hot; calories stay the same. One plate returns only when the food is depleted."
 }
