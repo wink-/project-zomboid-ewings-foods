@@ -38,7 +38,7 @@ Steam's installed app manifest supplied build 25485521; that manifest and machin
 
 `python tools/package.py` must create the install archive twice and require identical bytes. Verification checks the explicit member list, single EwingsFoods root, sibling 42/mod.info and common/, stable ordering/timestamps, CRCs, runtime bytes against source and SHA-256 sidecar. ZIP_STORED avoids compressor-version variability. The sidecar is supplied separately to avoid a self-referential checksum.
 
-Version 1.0.1 is prepared and committed locally only. No push, tag or release publication is performed for this update. The package is extracted locally and validated again. If publication is later authorized, compare the remote commit to local HEAD, anonymously download release assets and verify bytes/hash/members against this reviewed local package.
+Version 1.0.1 was extracted locally and validated again. Publication verification compares the pushed commit and tag to local HEAD, anonymously downloads the actual release ZIP and checksum, and checks their bytes, hash and members against the reviewed local package. These distribution checks do not establish live gameplay or multiplayer compatibility.
 
 ## Runtime limitations
 

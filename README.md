@@ -31,7 +31,7 @@ Vanilla cheese is unchanged: pizza ingredient support, 113 calories, -15 hunger,
 
 ## Install
 
-1. Use the locally built `EwingsFoods-1.0.1.zip` and verify its SHA-256 sidecar. This update is prepared locally and has not been pushed or released; published versions are listed under [Releases](https://github.com/wink-/project-zomboid-ewings-foods/releases). Close the game before installing.
+1. Download `EwingsFoods-1.0.1.zip` and its SHA-256 sidecar from the [v1.0.1 release](https://github.com/wink-/project-zomboid-ewings-foods/releases/tag/v1.0.1), verify the checksum, and close the game before installing.
 2. Extract the single `EwingsFoods` directory into the effective Project Zomboid user-data `mods` directory. It must contain `EwingsFoods/42/mod.info` and `EwingsFoods/common/`. Do not install a GitHub source archive as the install ZIP.
 3. Enable **Ewing's Foods** in the appropriate mod selection. For an existing world, use its own mod selection and back up the world first. No additional mod is required. When upgrading, replace only the old EwingsFoods folder instead of merging versions.
 

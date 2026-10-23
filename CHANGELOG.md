@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.1 - 2026-10-23 (prepared locally; not published)
+## 1.0.1 - 2026-10-23
 
 - Extend the existing cheese recipe with powered, active, unbroken and warmed ordinary stove support, using native power detection for both mains and generators.
 - Preserve native lit campfire/fireplace/barbecue acceptance, ingredients, vanilla cheese output, IDs, skill, time and XP. No duplicate recipe or workstation tag is added.
