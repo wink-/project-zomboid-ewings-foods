@@ -1,6 +1,6 @@
 # Runtime acceptance checks — pending
 
-These checks have not been run. Use a disposable world with only EwingsFoods enabled, and test the same mod version on a separate test server/client before multiplayer use. Do not use a valuable save to discover compatibility.
+These gameplay checks have not been run for 1.0.2. Static and isolated Lua checks are recorded separately in VALIDATION.md. Use a disposable world with only EwingsFoods enabled, and test the same mod version on a separate test server/client before multiplayer use. Do not use a valuable save to discover compatibility.
 
 | Check | Expected result |
 | --- | --- |
@@ -25,3 +25,25 @@ These checks have not been run. Use a disposable world with only EwingsFoods ena
 | Multiplayer | Server authoritative result; matching client/server inventories after craft, cancel, reconnect and simultaneous attempts |
 
 If a check fails, preserve the reproduction and inspect the exact current build before changing native behavior. Avoid publishing a runtime-verified claim until these checks are observed.
+
+## Tomato paste acceptance - pending actual gameplay
+
+| Check | Expected result |
+| --- | --- |
+| Registration | Exactly one Make Tomato Paste (Ewing's Foods), alongside unchanged Make Cheese; Cooking 1, nine tomatoes, time 1200 |
+| Valid batch | Nine full fresh raw thawed tomatoes consumed; one Base.TomatoPaste appears; no other output |
+| Tools | Test Pot and PotForged; empty pot, knife and spoon/mixing utensil keep item identity, condition and quantities |
+| Missing requirements | Eight tomatoes, Cooking 0, missing/dull knife, missing stirrer, missing/full pot block crafting |
+| Freshness boundary | Native Fresh tomatoes pass; stale at fresh-age boundary, rotten, frozen, burnt, cooked and partly eaten/used tomatoes fail |
+| Mixed stock | With eight fresh and one stale tomato there is no batch; with nine fresh plus bad leftovers only the nine valid tomatoes are selected; repeat manual and automatic selection |
+| Container exploit | No empty can, jar, lid, duplicate pot or other free container after crafting or eating/using all paste |
+| Native food | Same 120 calories, 0.2 weight, -15 hunger and packaged/nonperishable behavior as looted paste; pizza and evolved recipes accept it without opening |
+| Heat success | Repeat with lit campfire/fireplace/barbecue, active warm mains stove, then generator-powered stove after mains shutoff |
+| Heat failure | Off, cold, broken, zero-setting, unpowered/residually-hot stove; microwave/toaster/coffeemaker; heat outside same-floor 3x3 all fail |
+| Cancel | Cancel early and late; no paste and no consumed tomatoes; tool counts and identities unchanged |
+| Mid-action changes | Move away, remove a tool/tomato, turn off stove, stop generator/exhaust fuel, and age across fresh boundary; record native revalidation and inventory behavior |
+| Repeated batches | 18 fresh tomatoes make exactly two pastes, reusing the same three tools |
+| Cheese regression | Repeat the cheese cases above on both fire and mains/generator stove |
+| Save/reload/MP | Vanilla output survives reload/removal; separately test identical server/client versions, simultaneous crafts, cancel/reconnect and authoritative consumption |
+
+The Lua spy tests check the installed stop/performRecipe call flow only; they do not establish any of these actual inventory/world outcomes. Continuous heat tracking or custom transaction handling is not introduced.

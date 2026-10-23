@@ -1,8 +1,30 @@
 # Ewing's Foods
 
-Version **1.0.1** · mod ID **EwingsFoods** · standalone Project Zomboid **42.21** mod.
+Version **1.0.2** · mod ID **EwingsFoods** · standalone Project Zomboid **42.21** mod.
 
-One crafting action turns milk into the existing vanilla `Base.Cheese`, ready for pizza and other vanilla recipes. No new food, intermediate item, dependency, vanilla replacement, global Lua override, or background system is added. One mod-owned shared Lua callback extends the native heat check.
+Two independent one-step Cooking recipes make existing vanilla `Base.Cheese` or `Base.TomatoPaste`. No new food, intermediate item, dependency, vanilla replacement, global Lua override, or background system is added. The tomato recipe reuses the existing cheese heat predicate unchanged.
+
+## Make tomato paste
+
+Select **Make Tomato Paste (Ewing's Foods)** in Cooking. Have Cooking level 1 and the following accessible ingredients and tools, next to a lit open fire or an ordinary powered, switched-on, warmed stove.
+
+| Ingredient or tool | Per batch |
+| --- | --- |
+| `Base.Tomato` | 9 whole, fresh, uncooked, thawed tomatoes, consumed |
+| `Base.Pot` or `Base.PotForged` | 1 empty pot, kept |
+| Sharp knife or meat cleaver | 1 with native `base:sharpknife` or `base:meatcleaver` tag, not dull, kept |
+| Stirring utensil or spoon | 1 with native `base:mixingutensil` or `base:spoon` tag, kept |
+| Result | 1 unchanged vanilla `Base.TomatoPaste` |
+
+Fresh means the game's **Fresh** state: `Food:isFresh()` must pass. Stale, rotten, burnt, frozen, cooked or partly eaten/used tomatoes do not qualify. Native whole-food and uncooked flags enforce full raw ingredients; this avoids converting tiny leftover portions into full paste. Tomato age is not copied to the output because the existing vanilla paste has no spoilage period.
+
+The empty pot, knife and stirring utensil are retained as the same items, with no duplicate pot or extra container output. There is no jar, lid, can opener, empty tin, water, vinegar or salt requirement. Native item-count destruction consumes nine complete tomatoes on successful completion, rather than nine hunger-use units. No custom inventory mutation or early-consumption callback is added; cancellation/completion follow native handcraft behavior.
+
+Balance choices: nine tomatoes total 1.8 item-weight and 126 vanilla calories; one paste is 0.2 item-weight and 120 calories. This is a concentrated batch, abstractly chopped and stirred down as it is added to the reusable pot; item-weight is not a fluid-capacity measurement. The recipe takes **1200 native recipe units**, twice the existing cheese recipe, before engine skill/action modifiers. This represents reduction in one action, not a separate cooking item or a measured real-world simmer. Cooking 1 and 5 Cooking XP are mod choices. Actual elapsed in-game time has not been measured.
+
+**Packaging/storage tradeoff:** B42.21 defines only `Base.TomatoPaste`, marked `Packaged = true`, with no fresh/rotten ages, opening recipe, open-paste variant or empty-container replacement. It is immediately usable as pizza sauce/spice; it is not one of the sealed-can/open-can recipe pairs. To satisfy the request for the existing in-game item, this recipe deliberately produces that packaged, nonperishable item unchanged, abstracting its packaging. It does not model home canning, create a sealed tomato can, or award an empty can/jar. Retaining vanilla nutrition also retains its unusual macro split (32 g carbohydrate, 8 g fat, 0 g protein), -15 hunger, 20 unhappiness and inability to freeze.
+
+Heat uses the exact same rules and neighborhood described for cheese below, including generator power. Heat must pass when the native engine evaluates inputs; continuous heat monitoring throughout the action is not added. Live mid-action power-loss and cancellation behavior remains an acceptance check.
 
 ## Make cheese
 
@@ -31,7 +53,7 @@ Vanilla cheese is unchanged: pizza ingredient support, 113 calories, -15 hunger,
 
 ## Install
 
-1. Download `EwingsFoods-1.0.1.zip` and its SHA-256 sidecar from the [v1.0.1 release](https://github.com/wink-/project-zomboid-ewings-foods/releases/tag/v1.0.1), verify the checksum, and close the game before installing.
+1. Download `EwingsFoods-1.0.2-install.zip` and its SHA-256 sidecar from the [v1.0.2 release](https://github.com/wink-/project-zomboid-ewings-foods/releases/tag/v1.0.2), verify the checksum, and close the game before installing. The source ZIP is for development. This update is not installed automatically.
 2. Extract the single `EwingsFoods` directory into the effective Project Zomboid user-data `mods` directory. It must contain `EwingsFoods/42/mod.info` and `EwingsFoods/common/`. Do not install a GitHub source archive as the install ZIP.
 3. Enable **Ewing's Foods** in the appropriate mod selection. For an existing world, use its own mod selection and back up the world first. No additional mod is required. When upgrading, replace only the old EwingsFoods folder instead of merging versions.
 
@@ -41,9 +63,9 @@ This release is a manual download, not a Steam Workshop subscription. Nothing is
 
 Inspected target: Windows, game 42.21, Steam build 25485521. The version bounds intentionally cover only 42.21. Recheck future builds before widening them.
 
-Native crafting data, English translations and one shared, read-only mod-owned heat predicate are shipped. For multiplayer, distribute the identical version to server and every client and add `EwingsFoods` to the server's mod list according to its normal administration process. No Workshop ID exists. The absence of custom networking does not establish multiplayer compatibility: client/server crafting, sync, interruption, and reconnect still require runtime testing.
+Native crafting data, English translations and shared, read-only mod-owned predicates are shipped. For multiplayer, distribute the identical version to server and every client and add `EwingsFoods` to the server's mod list according to its normal administration process. No Workshop ID exists. The absence of custom networking does not establish multiplayer compatibility: client/server crafting, sync, interruption, and reconnect still require runtime testing.
 
-To roll back, close the game/server normally, disable this mod for that world/server, then remove only its `EwingsFoods` directory or restore a previous version. It creates no custom saved item types; existing crafted cheese stays vanilla cheese. Consumed ingredients are not refunded. Keep backups and check other mods for recipe conflicts. Do not merge a replacement release into an old folder.
+To roll back, close the game/server normally, disable this mod for that world/server, then remove only its `EwingsFoods` directory or restore a previous version. It creates no custom saved item types; existing crafted cheese and paste stay vanilla items. Consumed ingredients are not refunded. Keep backups and check other mods for recipe conflicts. Do not merge a replacement release into an old folder.
 
 ## Validation and development
 
@@ -54,7 +76,7 @@ Requires Python 3.12+ and a local copy of the inspected game for definition chec
 ```powershell
 python tools/validate.py --game-root '<your ProjectZomboid installation>'
 python tools/package.py
-python tools/package.py --verify dist/EwingsFoods-1.0.1.zip
+python tools/package.py --verify dist/EwingsFoods-1.0.2-install.zip
 ```
 
-The packager uses an explicit file allowlist, fixed timestamps, stable ordering and ZIP_STORED. It builds twice, requires identical bytes, and checks the checksum and install layout. Source contains original mod data, original tooling and documentation only; no game assets/source, credentials, personal paths or logs. No license has been selected by the owner; no third-party license is asserted.
+The packager uses an explicit file allowlist, fixed timestamps, stable ordering and ZIP_STORED. It builds twice, requires identical bytes, and checks the checksum and install layout. Install and source ZIPs are separately allowlisted. Source contains original mod data, original tooling and documentation only; no game assets/source, credentials, personal paths or logs. No license has been selected by the owner; no third-party license is asserted.

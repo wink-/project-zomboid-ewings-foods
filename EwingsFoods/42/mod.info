@@ -1,7 +1,7 @@
 name=Ewing's Foods
 id=EwingsFoods
-version=1.0.1
-description=Make vanilla cheese from milk, vinegar and salt with a reusable pot and cheesecloth near a lit fire or powered, active stove. Build 42.21.
+version=1.0.2
+description=Make vanilla cheese or tomato paste with reusable tools near a lit fire or powered, active stove. Build 42.21.
 author=wink-
 url=https://github.com/wink-/project-zomboid-ewings-foods
 versionMin=42.21

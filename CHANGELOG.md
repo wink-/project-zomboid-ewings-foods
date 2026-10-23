@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.2 - 2026-10-23
+
+- Add one Cooking recipe consuming nine whole, fresh, raw tomatoes for one existing vanilla TomatoPaste, with retained empty pot, sharp knife and stirring utensil; Cooking 1, time 1200, 5 Cooking XP.
+- Reject stale, rotten, frozen, burnt, cooked and partly consumed tomatoes using native status/whole/raw flags plus a tomato-only freshness predicate.
+- Reuse the 1.0.1 fire and powered/warmed stove predicate unchanged, including generator power; keep the cheese recipe and helper byte-identical.
+- Deliberately preserve the vanilla packaged/nonperishable paste definition and nutrition; no new food type, sealing/opening recipe, empty-can reward or inventory mutation.
+- Add English name/tooltip, installed-contract checks, 22 isolated tomato Lua cases, three native lifecycle spy cases, and separate deterministic install/source ZIPs. Gameplay/multiplayer acceptance remains pending.
+
+
 ## 1.0.1 - 2026-10-23
 
 - Extend the existing cheese recipe with powered, active, unbroken and warmed ordinary stove support, using native power detection for both mains and generators.

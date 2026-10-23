@@ -1,0 +1,25 @@
+module EwingsFoods
+{
+    craftRecipe EwingsFoods_MakeTomatoPaste
+    {
+        timedAction = Making,
+        time = 1200,
+        Tags = InHandCraft;Cooking;CanBeDoneInDark,
+        category = Cooking,
+        SkillRequired = Cooking:1,
+        xpAward = Cooking:5,
+        OnTest = EwingsFoodsTomatoPaste.canMake,
+        Tooltip = Tooltip_EwingsFoods_TomatoPaste,
+        inputs
+        {
+            item 1 [Base.Pot;Base.PotForged] mode:keep flags[IsEmpty],
+            item 1 tags[base:sharpknife;base:meatcleaver] mode:keep flags[IsNotDull],
+            item 1 tags[base:mixingutensil;base:spoon] mode:keep,
+            item 9 [Base.Tomato] mode:destroy flags[ItemCount;IsWholeFoodItem;IsUncookedFoodItem],
+        }
+        outputs
+        {
+            item 1 Base.TomatoPaste,
+        }
+    }
+}
