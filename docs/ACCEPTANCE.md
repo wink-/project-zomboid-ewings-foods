@@ -12,7 +12,12 @@ These checks have not been run. Use a disposable world with only EwingsFoods ena
 | Short inputs | No cheese with <1 L milk, missing acid/salt/pot/cloth, or Cooking 0 |
 | Invalid milk | Reject water, tainted water, hazardous/diluted/chocolate milk and mixed cow/sheep milk |
 | Bad food | Reject rotten/frozen food items if the engine can supply such input states; no fluid-age state is invented |
-| Heat | Accept native-supported lit campfire/fireplace/barbecue nearby; reject cold/out-of-range source and kitchen stove alone |
+| Heat | Accept native-supported lit campfire/fireplace/barbecue nearby; reject cold/out-of-range fire sources; powered, switched-on and warmed ordinary stoves now qualify |
+| Mains stove | On, unbroken ordinary stove with positive setting and warmth works with normal grid electricity, with no generator nearby |
+| Generator stove | After mains shutoff, a fueled/running generator supplying the stove permits the same one-action recipe |
+| Stove failures | Off, unpowered (including hot residual), cold, zero-setting, broken, out-of-range and other-floor stoves fail |
+| Other appliances | Microwaves, toasters and coffeemakers fail |
+| Power loss mid-craft | Test generator shutdown, fuel exhaustion, stove switch-off and movement during craft; check native revalidation/cancellation and inventory consistency |
 | Interrupted action | No free output or duplicate consumption after cancel, moving away or losing heat; inspect native timing behavior |
 | Repeated crafting | Each completion consumes exactly one batch; tools persist |
 | Vanilla food | Cheese retains vanilla nutrition, freshness, spoilage and pizza use |

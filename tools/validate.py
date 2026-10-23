@@ -77,17 +77,19 @@ def check(game, mod):
     props = dict(re.findall(r"^\s*(\w+)\s*=\s*([^,\n]+),", text, re.M))
     assert props == dict(timedAction="Making", time="600", Tags="InHandCraft;Cooking;CanBeDoneInDark",
                          category="Cooking", SkillRequired="Cooking:1", xpAward="Cooking:5",
-                         OnTest="RecipeCodeOnTest.openFire", Tooltip="Tooltip_Recipe_OpenFire")
+                         OnTest="EwingsFoodsHeat.canMakeCheese", Tooltip="Tooltip_EwingsFoods_CheeseHeat")
     assert "AllowRottenItem" not in text and "AllowFrozenItem" not in text
     assert "InheritFood" not in text and "mode:mixture" not in text and "mode:primary" not in text
-    assert not list(mod.rglob("*.lua")), "no Lua overrides expected"
+    assert [p.relative_to(mod).as_posix() for p in mod.rglob("*.lua")] == ["42/media/lua/shared/EwingsFoodsHeat.lua"], "only the mod-owned heat callback is expected"
     info = dict(line.split("=",1) for line in (mod / "42/mod.info").read_text().splitlines() if "=" in line)
-    assert info["id"] == "EwingsFoods" and info["version"] == "1.0.0"
+    assert info["id"] == "EwingsFoods" and info["version"] == "1.0.1"
     assert info["versionMin"] == info["versionMax"] == "42.21"
     assert (mod / "common").is_dir()
     translation = json.loads((mod / "42/media/lua/shared/Translate/EN/Recipes.json").read_text("utf-8-sig"))
     assert translation == {"EwingsFoods_MakeCheese": "Make Cheese (Ewing's Foods)"}
-    print("PASS layout, version bounds, single additive recipe, translation, tools, quantities and output")
+    tooltip = json.loads((mod / "42/media/lua/shared/Translate/EN/Tooltip.json").read_text("utf-8-sig"))
+    assert "Tooltip_EwingsFoods_CheeseHeat" in tooltip and "generator" in tooltip["Tooltip_EwingsFoods_CheeseHeat"]
+    print("PASS layout, version bounds, single additive recipe, translations, tools, unchanged quantities/balance/output")
 
     scripts = game / "media/scripts/generated"
     normal = (scripts / "items/normal.txt").read_text("utf-8-sig")
@@ -134,6 +136,33 @@ def check(game, mod):
         recipe = get("zombie/scripting/entity/components/crafting/CraftRecipe")
         keys = {v[1] for v in recipe.cp if v and v[0]==1}
         assert set(props) <= keys
+        def calls(owner, method, target):
+            cls = get(owner)
+            attribute = next(a["Code"] for n,d,a in cls.methods if n == method)
+            code = attribute[8:8+int.from_bytes(attribute[4:8],"big")]
+            matches = [i for i,v in enumerate(cls.cp) if v and v[0] in (10,11) and target in cls.val(i)]
+            return any(bytes([op])+struct.pack(">H",i) in code for i in matches for op in (0xb6,0xb8,0xb9))
+        assert calls("zombie/inventory/ItemContainer","isPowered","IsoObject:checkObjectPowered:()Z")
+        assert calls("zombie/iso/IsoObject","checkObjectPowered","ItemContainer:isObjectPowered:")
+        for method in ("isObjectPowered","isSquarePowered"):
+            for predicate in ("haveElectricity:()Z","hasGridPower:()Z"):
+                assert calls("zombie/inventory/ItemContainer",method,predicate)
+        assert calls("zombie/iso/IsoGridSquare","haveElectricity","IsoChunk:isGeneratorPoweringSquare:(III)Z")
+        assert calls("zombie/iso/IsoGridSquare","getRadius","IsoGridSquare:getZ:()I")
+        stove = get("zombie/iso/objects/IsoStove")
+        signatures = {(n,d) for n,d,a in stove.methods}
+        for method,descriptor in [("Activated","()Z"),("isBroken","()Z"),("isMicrowave","()Z"),
+                                  ("getCurrentTemperature","()F"),("getMaxTemperature","()F")]:
+            assert (method,descriptor) in signatures
+        attribute = next(a["Code"] for n,d,a in stove.methods if n=="getCurrentTemperature")
+        temperature = attribute[8:8+int.from_bytes(attribute[4:8],"big")]
+        hundred = next(i for i,v in enumerate(stove.cp) if v == (4,"42c80000"))
+        current = next(i for i,v in enumerate(stove.cp) if v and v[0]==9 and stove.val(i).endswith("IsoStove:currentTemperature:F"))
+        # Verify native normalization (raw + 100) / 100: an unwarmed raw zero is 1.
+        assert temperature == (b"\x2a\xb4"+struct.pack(">H",current)+b"\x13"+struct.pack(">H",hundred)
+                               +b"\x62\x13"+struct.pack(">H",hundred)+b"\x6e\xae")
+        assert calls("zombie/iso/objects/IsoStove","update","ItemContainer:isPowered:()Z")
+        print("PASS installed stove/power API chain: active stove, normalized warmth, grid plus generator electricity, same-floor neighborhood")
     print("PASS installed 42.21 bytecode contracts: exact milk filter default, rotten guard, native open-fire callback, flags and recipe keys")
 
     cooking = (scripts / "recipes/recipes_cooking.txt").read_text("utf-8-sig")
@@ -158,6 +187,8 @@ def check(game, mod):
     for rel in ["projectzomboid.jar", "media/scripts/generated/items/normal.txt", "media/scripts/generated/items/food.txt",
                 "media/scripts/generated/items/drainable.txt", "media/scripts/generated/fluids.txt"]:
         print(hashlib.sha256((game/rel).read_bytes()).hexdigest(), rel)
+    from test_heat import run
+    run(game, mod)
     print("Offline checks passed. Gameplay, interruption/revalidation and multiplayer remain untested.")
 
 

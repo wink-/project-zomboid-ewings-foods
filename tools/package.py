@@ -3,9 +3,10 @@ from pathlib import Path
 import argparse, hashlib, io, zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 RUNTIME = ["42/mod.info", "42/media/scripts/ewingsfoods_cheese.txt",
-           "42/media/lua/shared/Translate/EN/Recipes.json"]
+           "42/media/lua/shared/Translate/EN/Recipes.json",
+           "42/media/lua/shared/Translate/EN/Tooltip.json", "42/media/lua/shared/EwingsFoodsHeat.lua"]
 DOCS = ["README.md", "CHANGELOG.md", "docs/VALIDATION.md", "docs/ACCEPTANCE.md"]
 EXPECTED = {"EwingsFoods/" + p for p in RUNTIME + DOCS} | {"EwingsFoods/common/"}
 
@@ -17,7 +18,7 @@ def archive_bytes():
     out = io.BytesIO()
     with zipfile.ZipFile(out, "w", compression=zipfile.ZIP_STORED) as z:
         for name, data in sorted(entries.items()):
-            entry = zipfile.ZipInfo(name, (2026, 10, 22, 0, 0, 0))
+            entry = zipfile.ZipInfo(name, (2026, 10, 23, 0, 0, 0))
             entry.create_system = 3
             entry.external_attr = ((0o40755 if name.endswith("/") else 0o100644) << 16)
             if name.endswith("/"):
@@ -34,7 +35,7 @@ def verify(path):
     with zipfile.ZipFile(io.BytesIO(data)) as z:
         assert z.testzip() is None
         assert set(z.namelist()) == EXPECTED and len(z.namelist()) == len(EXPECTED)
-        assert all(i.date_time == (2026, 10, 22, 0, 0, 0) for i in z.infolist())
+        assert all(i.date_time == (2026, 10, 23, 0, 0, 0) for i in z.infolist())
         assert all(i.compress_type == zipfile.ZIP_STORED for i in z.infolist())
         for p in RUNTIME:
             assert z.read("EwingsFoods/" + p) == (ROOT / "EwingsFoods" / p).read_bytes()

@@ -8,8 +8,8 @@ module EwingsFoods
         category = Cooking,
         SkillRequired = Cooking:1,
         xpAward = Cooking:5,
-        OnTest = RecipeCodeOnTest.openFire,
-        Tooltip = Tooltip_Recipe_OpenFire,
+        OnTest = EwingsFoodsHeat.canMakeCheese,
+        Tooltip = Tooltip_EwingsFoods_CheeseHeat,
         inputs
         {
             item 1 [Base.Pot;Base.PotForged] mode:keep flags[IsEmpty],
